@@ -1,4 +1,4 @@
-# Ecommerce
+# Model API
 
 ## Command
 To run the server
