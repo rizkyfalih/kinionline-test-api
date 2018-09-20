@@ -39,22 +39,12 @@ def model_DecisionTree(X_train,y_train):
     filename = 'decision_model.sav'
     pickle.dump(model, open(filename, 'wb'))
 
-#    y_pred = classifier.predict(X_test)
-#    
-#    accuracy = accuracy_score(y_test, y_pred) * 100
-#    print("Accuracy DecisionTree = " + str(accuracy))
-#    
-#    return y_pred
-
-def model_RandomForest(X_train,y_train,X_test, y_test):
-    classifier = RandomForestClassifier(n_estimators=100) 
-    classifier.fit(X_train,y_train)
-    y_pred = classifier.predict(X_test)
+def model_RandomForest(X_train,y_train):
+    model = RandomForestClassifier(n_estimators=100) 
+    model.fit(X_train,y_train)
     
-    accuracy = accuracy_score(y_test, y_pred) * 100
-    print("Accuracy RadomForest = " + str(accuracy))
-    
-    return y_pred
+    filename = 'ranforest_model.sav'
+    pickle.dump(model, open(filename, 'wb'))
 
 f_neg = open('neg.txt', 'r')
 data_neg = f_neg.read()
@@ -98,11 +88,17 @@ y_train = np.hstack((y[y1[:950]],y[y0[:950]]))
 y_test = np.hstack((y[y1[950:]],y[y0[950:]]))
 
 # model_DecisionTree(X_train, y_train)
+# model_RandomForest(X_train, y_train)
 
-filename = 'decision_model.sav'
-loaded_model = pickle.load(open(filename, 'rb'))
-result = loaded_model.score(X_test, y_test)
-predict = loaded_model.predict(X_test)
+#filename_decision = 'decision_model.sav'
+#decision_model = pickle.load(open(filename_decision, 'rb'))
+#result = decision_model.score(X_test, y_test)
+#predict = decision_model.predict(X_test)
+#print(result)
+
+filename_ranforest = 'ranforest_model.sav'
+ranforest_model = pickle.load(open(filename_ranforest, 'rb'))
+result = ranforest_model.score(X_test, y_test)
+predict = ranforest_model.predict(X_test)
 print(result)
 
-#predict_forest = model_RandomForest(X_train, y_train, X_test, y_test)
