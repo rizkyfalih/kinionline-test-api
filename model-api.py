@@ -9,6 +9,7 @@ class DecisionModelRequest():
         res.status = falcon.HTTP_200
         data = json.loads(req.stream.read())
 
+        # Get the data for create feature
         f_neg = open('neg.txt', 'r')
         data_neg = f_neg.read()
         data_neg = data_neg.split('\n')
@@ -24,9 +25,19 @@ class DecisionModelRequest():
         for i in range(1000):
             dataTrain.append(data_pos[i])
 
+
+        # Clean the data Training that we get before
+        cleanData = []
+        for i in range(2000):
+            corpusData = re.sub('[^a-zA-Z]', ' ', dataTrain[i])
+            corpusData = corpusData.lower()
+            corpusData = corpusData.split()
+            corpusData = ' '.join(corpusData)
+            cleanData.append(corpusData)
+
         # Build a vocab
         vectorizer = CountVectorizer(max_features=6897)
-        dataFeature = vectorizer.fit(dataTrain)
+        dataFeature = vectorizer.fit(cleanData)
 
         # Clean the data
         corpus = str(data['text'])
@@ -63,6 +74,7 @@ class RanforestModelRequest():
         res.status = falcon.HTTP_200
         data = json.loads(req.stream.read())
 
+        # Get the data for create feature
         f_neg = open('neg.txt', 'r')
         data_neg = f_neg.read()
         data_neg = data_neg.split('\n')
@@ -78,11 +90,20 @@ class RanforestModelRequest():
         for i in range(1000):
             dataTrain.append(data_pos[i])
 
+        # Clean the data Training that we get before
+        cleanData = []
+        for i in range(2000):
+            corpusData = re.sub('[^a-zA-Z]', ' ', dataTrain[i])
+            corpusData = corpusData.lower()
+            corpusData = corpusData.split()
+            corpusData = ' '.join(corpusData)
+            cleanData.append(corpusData)
+
         # Build a vocab
         vectorizer = CountVectorizer(max_features=6897)
-        dataFeature = vectorizer.fit(dataTrain)
+        dataFeature = vectorizer.fit(cleanData)
 
-        # Clean the data
+        # Clean the data input json
         corpus = str(data['text'])
         corpus = re.sub('[^a-zA-Z]', ' ', corpus)
         corpus = corpus.lower()
@@ -101,7 +122,7 @@ class RanforestModelRequest():
 
         # The output
         if(predict[0] == 1):
-            pred_sentiment = 'Postif'
+            pred_sentiment = 'Positif'
         else:
             pred_sentiment = 'Negatif'
 
