@@ -2,7 +2,7 @@
 """
 Created on Thu Sep 20 10:25:20 2018
 
-@author: Acer
+@author: rizkyfalih
 """
 
 import pandas as pd
@@ -33,16 +33,16 @@ def bag_of_word(corpus):
     return X,Y
 
 def model_DecisionTree(X_train,y_train):
-    model = DecisionTreeClassifier(random_state=0) 
+    model = DecisionTreeClassifier(random_state=0)
     model.fit(X_train,y_train)
 
     filename = 'decision_model.sav'
     pickle.dump(model, open(filename, 'wb'))
 
 def model_RandomForest(X_train,y_train):
-    model = RandomForestClassifier(n_estimators=100) 
+    model = RandomForestClassifier(n_estimators=100)
     model.fit(X_train,y_train)
-    
+
     filename = 'ranforest_model.sav'
     pickle.dump(model, open(filename, 'wb'))
 
@@ -57,17 +57,17 @@ data_pos = data_pos.split('\n')
 dataTrain = []
 for i in range(1000):
     dataTrain.append(data_neg[i])
-    
+
 for i in range(1000):
     dataTrain.append(data_pos[i])
 
 
 y = []
 for i in range(1000):
-     y.append(0)    
+     y.append(0)
 
 for i in range(1000):
-     y.append(1)    
+     y.append(1)
 
 
 # Create dataFrame
@@ -90,15 +90,14 @@ y_test = np.hstack((y[y1[950:]],y[y0[950:]]))
 # model_DecisionTree(X_train, y_train)
 # model_RandomForest(X_train, y_train)
 
-#filename_decision = 'decision_model.sav'
-#decision_model = pickle.load(open(filename_decision, 'rb'))
-#result = decision_model.score(X_test, y_test)
-#predict = decision_model.predict(X_test)
-#print(result)
+filename_decision = 'decision_model.sav'
+decision_model = pickle.load(open(filename_decision, 'rb'))
+result = decision_model.score(X_test, y_test)
+predict = decision_model.predict(X_test)
+print(result)
 
 filename_ranforest = 'ranforest_model.sav'
 ranforest_model = pickle.load(open(filename_ranforest, 'rb'))
 result = ranforest_model.score(X_test, y_test)
 predict = ranforest_model.predict(X_test)
 print(result)
-
